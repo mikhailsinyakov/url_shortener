@@ -19,14 +19,14 @@ app.get(/\/new\/[\S]+/, (req, res) => {
       // If a query is a valid url
       if (query.match(/https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/)) {
         const url = query;
-        console.log(db)
         mongoConnect((err, db) => {
-        if (err) console.error("Can't access to database");
-      const coll = db.db("short_urls").collection("short_urls");
-      coll.find({original_url: "http://google.com"}, {_id: 0}).toArray((err, result) => {
-        console.log(result[0]);
-      });
-    });
+          if (err) console.error("Can't access to database");
+          const coll = db.db("short_urls").collection("short_urls");
+          // Check if this url already exist
+          coll.find({original_url: url}, {_id: 0}).toArray((err, result) => {
+            console.log(result);
+          });
+        });
         
         obj = {
           original_url: url,
