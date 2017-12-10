@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>URL Shortener</title>
+    <meta name="description" content="URL Shortener">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <header>
+      <h1>
+        URL Shortener
+      </h1>
+    </header>
+
+    <main>
+      <p>
+        Example creation usage:
+      </p>
+      <code>
+        https://raspy-fright.glitch.me/new/https://www.google.com<br>
+        https://raspy-fright.glitch.me/new/http://foo.com:80
+      </code>
+      <p>
+        Example creation output:
+      </p>
+      <code>
+        { "original_url":"http://foo.com:80", "short_url":"https://raspy-fright.glitch.me/8170" }
+      </code>
+      <p>
+        Usage:
+      </p>
+      <code>
+        https://raspy-fright.glitch.me/2871
+      </code>
+      <p>
+        Will redirect to:
+      </p>
+      <code>
+        https://www.google.com/
+      </code>
+    </main>
+
+
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    <script src="/client.js"></script>
+
+  </body>
+</html>
