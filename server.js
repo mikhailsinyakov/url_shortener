@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT;
 const db = require("./database");
+const mongo = require("mongodb").MongoClient;
+const mongoPath = require("./mon")
 
 app.use(express.static('public'));
 
@@ -17,7 +19,7 @@ app.get(/\/new\/[\S]+/, (req, res) => {
       // If a query is a valid url
       if (query.match(/https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/)) {
         const url = query;
-        
+        console.log(db)
         
         
         obj = {
