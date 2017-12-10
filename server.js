@@ -8,12 +8,11 @@ app.get("/", (req, res) => {
 });
 
 
-app.route("/new")
-  .get((req, res) => {
+app.get("/new/:url", (req, res) => {
       const url = req.params.url;
       console.log(req.params.url);
       const obj = {
-        //original_url: url,
+        original_url: url,
         short_url: ""
       };
       res.set("Content-Type", "application/json");
