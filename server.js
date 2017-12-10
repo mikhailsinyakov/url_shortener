@@ -8,7 +8,7 @@ app.get("/", (req, res) => {
 });
 
 
-app.route("/new/:url")
+app.route("/new")
   .get((req, res) => {
       const url = req.params.url;
       console.log(req.params.url);
