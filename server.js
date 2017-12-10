@@ -26,24 +26,22 @@ app.get(/\/new\/[\S]+/, (req, res) => {
           // Check if this url already exist
           collection.find({original_url: url}).toArray((err, result) => {
             if (!result[0]) {
-              obj = addEntry(collection, url);
+              addEntry(collection, url, () => res.json(obj));
+            }
+            else {
+              
             }
           });
         });
-        
-        obj = {
-          original_url: url,
-          short_url: ""
-        }
       }
       else {
         obj = {
           error: "Wrong url format, make sure you have a valid protocol and real site."
         };
+        res.json(obj);
       }
       
-      res.set("Content-Type", "application/json");
-      res.json(obj);
+      
     });
 
 
