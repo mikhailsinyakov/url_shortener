@@ -8,10 +8,10 @@ app.get("/", (req, res) => {
 });
 
 
-app.route("/new")
-  .get(/*"/:url", */(req, res) => {
-      //const url = req.params.url;
-      console.log(req.params);
+app.route("/new/:url")
+  .get((req, res) => {
+      const url = req.params.url;
+      console.log(req.params.url);
       const obj = {
         //original_url: url,
         short_url: ""
