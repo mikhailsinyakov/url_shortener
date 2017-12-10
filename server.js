@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT;
 app.use(express.static('public'));
 
-app.get("/", (request, response) => {
+app.get("/new", (request, response) => {
   response.sendFile(__dirname + '/views/index.html');
 });
 
