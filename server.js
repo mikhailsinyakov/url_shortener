@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT;
-const db = require("./database");
 const mongo = require("mongodb").MongoClient;
-const mongoPath = require("./mon")
+const mongoConnect = require("./mongoConnect");
+console.log(mongoConnect);
 
 app.use(express.static('public'));
 
