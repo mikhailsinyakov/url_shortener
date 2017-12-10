@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT;
-const mongo = require("mongodb").MongoClient;
+//const mongo = require("mongodb").MongoClient;
 const mongoConnect = require("./mongoConnect");
-console.log(mongoConnect);
+
 
 app.use(express.static('public'));
 
@@ -20,7 +20,13 @@ app.get(/\/new\/[\S]+/, (req, res) => {
       if (query.match(/https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/)) {
         const url = query;
         console.log(db)
-        
+        mongoConnect((err, db) => {
+        if (err) console.error("Can't access to database");
+      const coll = db.db("short_urls").collection("short_urls");
+      coll.find({original_url: "http://google.com"}, {_id: 0}).toArray((err, result) => {
+        console.log(result[0]);
+      });
+    });
         
         obj = {
           original_url: url,
