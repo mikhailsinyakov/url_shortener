@@ -3,12 +3,17 @@ const app = express();
 const port = process.env.PORT;
 app.use(express.static('public'));
 
-app.get("/new", (request, response) => {
-  response.sendFile(__dirname + '/views/index.html');
-});
 
-app.post("/dreams", (req, res) => {
-  res.sendStatus(200);
+
+app.route("/new/:url")
+    .all((req, res) => {
+      const url = req.params.url;
+      console.log(req.params.url);
+      res.send("H");
+    });
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + '/views/index.html');
 });
 
 app.listen(port, () => {
