@@ -26,7 +26,7 @@ app.get(/\/new\/[\S]+/, (req, res) => {
           // Check if this url already exist
           collection.find({original_url: url}).toArray((err, result) => {
             if (!result[0]) {
-              addEntry(collection, url, () => res.json(obj));
+              addEntry(collection, url, obj => res.json(obj));
             }
             else {
               
