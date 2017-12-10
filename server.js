@@ -9,13 +9,24 @@ app.get("/", (req, res) => {
 
 
 app.get(/\/new\/[\S]+/, (req, res) => {
-      const url = req.url.slice(5);
-      console.log(url);
-      console.log(url.match(/https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/));
-      const obj = {
-        original_url: url,
-        short_url: ""
+      const query = req.url.slice(5);
+      let obj = {};
+  
+      // If a query is a valid url
+      if (query.match(/https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/)) {
+        console.log(query.match(/https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/))
+        const url = query;
+        obj = {
+          original_url: url,
+          short_url: ""
+        }
+      }
+      else {
+        obj = {
+        error: "Wrong url format, make sure you have a valid protocol and real site."
       };
+      }
+      
       res.set("Content-Type", "application/json");
       res.json(obj);
     });
