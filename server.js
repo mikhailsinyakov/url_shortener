@@ -8,8 +8,8 @@ app.get("/", (req, res) => {
 });
 
 
-app.get("/new/:protocol//:address", (req, res) => {
-      const url = `${req.params.protocol}//${req.params.address}`;
+app.get("/new/:protocol//:address/:path", (req, res) => {
+      const url = `${req.params.protocol}//${req.params.address}/${req.params.path}`;
       console.log(url);
       const obj = {
         original_url: url,
