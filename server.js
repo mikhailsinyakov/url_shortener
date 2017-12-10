@@ -10,11 +10,12 @@ app.get("/", (req, res) => {
 
 app.get(/\/new\/[\S]+/, (req, res) => {
       const query = req.url.slice(5);
+      console.log(query)
       let obj = {};
   
       // If a query is a valid url
       if (query.match(/https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/)) {
-        console.log(query.match(/https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/))
+        console.log(query.match(/https?:\/{2}(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/))
         const url = query;
         obj = {
           original_url: url,
