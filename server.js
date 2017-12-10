@@ -24,7 +24,12 @@ app.get(/\/new\/[\S]+/, (req, res) => {
           const coll = db.db("short_urls").collection("short_urls");
           // Check if this url already exist
           coll.find({original_url: url}, {_id: 0}).toArray((err, result) => {
-            console.log(result);
+            if (!result[0]) {
+              const num = Math.floor(Math.random() * 100000);
+              const shortUrl = `https://raspy-fright.glitch.me/${num}`;
+              console.log(shortUrl)
+              //coll.insert({original_url: url, short_url: })
+            }
           });
         });
         
