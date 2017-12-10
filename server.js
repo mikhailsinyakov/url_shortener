@@ -25,9 +25,9 @@ app.get(/\/new\/[\S]+/, (req, res) => {
           // Check if this url already exist
           coll.find({original_url: url}).toArray((err, result) => {
             if (!result[0]) {
-              const shortUrl = setTimeout(function() {createShortUrl()}, 500);
-              
-              console.log(shortUrl)
+              let shortUrl;
+              setTimeout(function() {console.log(createShortUrl())}, 500);
+              //console.log(shortUrl)
               //coll.insert({original_url: url, short_url: })
               function createShortUrl() {
                 const num = Math.floor(Math.random() * 100000);
