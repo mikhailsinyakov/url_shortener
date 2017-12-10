@@ -8,9 +8,10 @@ app.get("/", (req, res) => {
 });
 
 
-app.get(/\/new\/https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/, (req, res) => {
-      const url = req.url;
+app.get(/\/new\/[\S]+/, (req, res) => {
+      const url = req.url.slice(5);
       console.log(url);
+      console.log(url.match(/https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/));
       const obj = {
         original_url: url,
         short_url: ""
