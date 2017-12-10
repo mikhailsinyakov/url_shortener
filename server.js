@@ -3,6 +3,7 @@ const app = express();
 const port = process.env.PORT;
 //const mongo = require("mongodb").MongoClient;
 const mongoConnect = require("./mongoConnect");
+const addEntry = require("./addEntry");
 
 
 app.use(express.static('public'));
@@ -16,29 +17,16 @@ app.get(/\/new\/[\S]+/, (req, res) => {
       const query = req.url.slice(5);
       let obj = {};
   
-      // If a query is a valid url
+      // If the query is a valid url
       if (query.match(/https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/)) {
         const url = query;
         mongoConnect((err, db) => {
           if (err) console.error("Can't access to database");
-          const coll = db.db("short_urls").collection("short_urls");
+          const collection = db.db("short_urls").collection("short_urls");
           // Check if this url already exist
-          coll.find({original_url: url}).toArray((err, result) => {
+          collection.find({original_url: url}).toArray((err, result) => {
             if (!result[0]) {
-              let shortUrl;
-              setTimeout(function() {console.log(createShortUrl())}, 500);
-              //console.log(shortUrl)
-              //coll.insert({original_url: url, short_url: })
-              function createShortUrl() {
-                const num = Math.floor(Math.random() * 100000);
-                const shortUrl = `https://raspy-fright.glitch.me/${num}`;
-                coll.find({short_url: shortUrl}).toArray((err,result) => {
-                  if (result[0]) {
-                    createShortUrl();
-                  }
-                  else return shortUrl;
-                });
-              }
+              obj = addEntry(collection, url);
             }
           });
         });
