@@ -8,9 +8,9 @@ app.get("/", (req, res) => {
 });
 
 
-app.get("/new/:url", (req, res) => {
-      const url = req.params.url;
-      console.log(req.params.url);
+app.get("/new/:protocol//:address", (req, res) => {
+      const url = `${req.params.protocol}//${req.params.address}`;
+      console.log(url);
       const obj = {
         original_url: url,
         short_url: ""
