@@ -78,7 +78,19 @@ mongoConnect((err, db) => {
       }
   });
   
-  //app.get()
+  app.get(/^\/\d{4,}$/, (req, res) => {
+    const query = req.url.slice(1);
+    const shortUrl = `https://raspy-fright.glitch.me/${query}`;
+    collection.find().toArray((err, result) => {
+      const matched = result.filter(val => val.short_url == shortUrl)
+    });
+  });
+  
+  app.get("/error", (req, res) => {
+    const obj = {
+      error: "Invalid request, please get information on https://raspy-fright.glitch.me/"
+    }
+  });
 });
 
 app.listen(port, () => {
