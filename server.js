@@ -25,14 +25,27 @@ app.get(/^\/new\/[\S]+$/, (req, res) => {
           // Check if this url already exist
           collection.find().toArray((err, result) => {
             const original_urls = result.map(val => val.original_url);
-            const matched = original_urls.filt
+            const matched = original_urls.filter(val => val == url);
             
-            if (!result[0]) {
+            if (matched) {
+              
               
             }
             else {
-              
+              const short_urls = result.map(val => val.short_url);
+              let countFails = 0;
+              let rangeRandom = 10000;
+              const addNewShortUrl = () => {
+                const num = Math.floor(Math.random() * rangeRandom);
+                const shortUrl = `https://raspy-fright.glitch.me/${num}`;
+                const matched = short_urls.filter(val => val == shortUrl);
+                if (matched && countFailes < 10) {
+                  countFails++;
+                  addNewShortUrl()
+                } 
+              };
             }
+            
           });
         });
       }
