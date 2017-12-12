@@ -11,6 +11,9 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+mongoConnect((err, db) => {
+          if (err) console.error("Can't access to database");
+          const collection = db.db("short_urls").collection("short_urls");
 
 app.get(/^\/new\/[\S]+$/, (req, res) => {
       const query = req.url.slice(5);
@@ -24,14 +27,17 @@ app.get(/^\/new\/[\S]+$/, (req, res) => {
           // Check if this url already exist
           collection.find().toArray((err, result) => {
             const original_urls = result.map((val, index) => [val.original_url, index]);
-            console.log(original_urls)
             const matchedDoc = original_urls.filter(val => val[0] == url);
-            const index = matchedDoc[1] || -1;
+            let index;
+            if (matchedDoc.length) index = matchedDoc[0][1];
             const matched = matchedDoc.length;
             
             if (matched) {
               // Show data of existing document in a page
-              const obj = result[index];
+              const obj = {
+                original_url: result[index].original_url,
+                short_url : result[index].short_url
+              };
               res.json(obj);
             }
             else {
