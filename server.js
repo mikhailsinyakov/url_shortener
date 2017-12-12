@@ -28,22 +28,39 @@ app.get(/^\/new\/[\S]+$/, (req, res) => {
             const matched = original_urls.filter(val => val == url);
             
             if (matched) {
-              
+              // Show matched document's data in a page
               
             }
             else {
+              // Add new document into database and show its data in a page
               const short_urls = result.map(val => val.short_url);
               let countFails = 0;
               let rangeRandom = 10000;
+              let newShortUrl;
               const addNewShortUrl = () => {
                 const num = Math.floor(Math.random() * rangeRandom);
                 const shortUrl = `https://raspy-fright.glitch.me/${num}`;
                 const matched = short_urls.filter(val => val == shortUrl);
-                if (matched && countFailes < 10) {
+                if (matched && countFails < 10) {
                   countFails++;
-                  addNewShortUrl()
+                  addNewShortUrl();
                 } 
+                else if (matched && countFails == 10) {
+                  countFails = 0;
+                  rangeRandom *= 10;
+                  addNewShortUrl();
+                }
+                else {
+                  newShortUrl = shortUrl;
+                }
               };
+              addNewShortUrl();
+              const obj = {
+                original_url: url,
+                short_url: newShortUrl
+              };
+              
+              res.json(obj);
             }
             
           });
