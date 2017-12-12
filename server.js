@@ -13,11 +13,12 @@ app.get("/", (req, res) => {
 
 
 app.get(/^\/new\/[\S]+$/, (req, res) => {
+  console.log("check")
       const query = req.url.slice(5);
       let obj = {};
   
       // If the query is a valid url
-      if (query.match(/https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*/)) {
+      if (query.match(/^https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*$/)) {
         const url = query;
         mongoConnect((err, db) => {
           if (err) console.error("Can't access to database");
@@ -28,12 +29,12 @@ app.get(/^\/new\/[\S]+$/, (req, res) => {
             const matched = original_urls.filter(val => val == url);
             
             if (matched) {
-              // Show matched document's data in a page
+              // Show data of existing document in a page
               
             }
             else {
               // Add new document into database and show its data in a page
-              const short_urls = result.map(val => val.short_url);
+              /*const short_urls = result.map(val => val.short_url);
               let countFails = 0;
               let rangeRandom = 10000;
               let newShortUrl;
@@ -60,7 +61,9 @@ app.get(/^\/new\/[\S]+$/, (req, res) => {
                 short_url: newShortUrl
               };
               
-              res.json(obj);
+              collection.insert(obj);
+              
+              res.json(obj);*/
             }
             
           });
