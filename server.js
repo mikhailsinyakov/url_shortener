@@ -13,9 +13,7 @@ app.get("/", (req, res) => {
 
 
 app.get(/^\/new\/[\S]+$/, (req, res) => {
-  console.log("check")
       const query = req.url.slice(5);
-      let obj = {};
   
       // If the query is a valid url
       if (query.match(/^https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*$/)) {
@@ -26,22 +24,26 @@ app.get(/^\/new\/[\S]+$/, (req, res) => {
           // Check if this url already exist
           collection.find().toArray((err, result) => {
             const original_urls = result.map(val => val.original_url);
-            const matched = original_urls.filter(val => val == url);
+            const matched = original_urls.filter(val => val == url).length;
             
             if (matched) {
               // Show data of existing document in a page
-              
+              const obj = {
+                original_url: url,
+                short_url: newShortUrl
+              };
+              res.json(obj);
             }
             else {
               // Add new document into database and show its data in a page
-              /*const short_urls = result.map(val => val.short_url);
+              const short_urls = result.map(val => val.short_url);
               let countFails = 0;
               let rangeRandom = 10000;
               let newShortUrl;
               const addNewShortUrl = () => {
                 const num = Math.floor(Math.random() * rangeRandom);
                 const shortUrl = `https://raspy-fright.glitch.me/${num}`;
-                const matched = short_urls.filter(val => val == shortUrl);
+                const matched = short_urls.filter(val => val == shortUrl).length;
                 if (matched && countFails < 10) {
                   countFails++;
                   addNewShortUrl();
@@ -61,9 +63,9 @@ app.get(/^\/new\/[\S]+$/, (req, res) => {
                 short_url: newShortUrl
               };
               
+              res.json(obj);
               collection.insert(obj);
               
-              res.json(obj);*/
             }
             
           });
