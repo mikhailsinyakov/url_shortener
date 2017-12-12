@@ -82,7 +82,21 @@ mongoConnect((err, db) => {
     const query = req.url.slice(1);
     const shortUrl = `https://raspy-fright.glitch.me/${query}`;
     collection.find().toArray((err, result) => {
-      const matched = result.filter(val => val.short_url == shortUrl)
+      const short_urls = result.map((val, index) => [val.short_url, index]);
+      const matchedDoc = short_urls.filter(val => val[0] == shortUrl);
+      let index;
+      if (matchedDoc.length) index = matchedDoc[0][1];
+      const matched = matchedDoc.length;
+      if (matched) {
+        const originalUrl = result[index].original_url;
+        res.redirect(originalUrl);
+      }
+      else {
+        const obj = {
+          error: "First use https://raspy-fright.glitch.me/new/yourwebsite"
+        }
+        res.json(obj);
+      }
     });
   });
   
