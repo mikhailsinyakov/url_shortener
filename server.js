@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 mongoConnect((err, db) => {
   if (err) console.error("Can't access to database");
   const collection = db.db("short_urls").collection("short_urls");
-  app.get(/^\/new\/[\S]+$/, (req, res) => {
+  app.get(/^\/new\/\S+$/, (req, res) => {
       const query = req.url.slice(5);
       const validUrl = /^https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*$/;
       if (query.match(validUrl)) {
