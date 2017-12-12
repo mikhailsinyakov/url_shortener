@@ -14,9 +14,10 @@ app.get("/", (req, res) => {
 mongoConnect((err, db) => {
   if (err) console.error("Can't access to database");
   const collection = db.db("short_urls").collection("short_urls");
-  const validUrl = /https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*$/;
-  const validNewRequest = new RegExp(/^/ + "/new" + validUrl);
-  console.log()
+  const validUrlStr = /https?:\/\/(www.)?\w+.\w{2,5}(\/[\w\?=&-]+)*$/;
+  const validUrl = new RegExp("^" + validUrlStr);
+  const validAddRequest = new RegExp("^/new/" + validUrlStr);
+  console.log(validUrl)
   app.get(/^\/new\/[\S]+$/, (req, res) => {
       const query = req.url.slice(5);
       const validUrl = /^https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*$/;
