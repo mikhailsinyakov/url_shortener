@@ -78,7 +78,7 @@ mongoConnect((err, db) => {
       }
   });
   
-  app.get(/^\/\d{4,}$/, (req, res) => {
+  app.get(/^\/\d+$/, (req, res) => {
     const query = req.url.slice(1);
     const shortUrl = `https://raspy-fright.glitch.me/${query}`;
     collection.find().toArray((err, result) => {
