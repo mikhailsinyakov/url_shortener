@@ -3,7 +3,6 @@ const app = express();
 const port = process.env.PORT;
 //const mongo = require("mongodb").MongoClient;
 const mongoConnect = require("./mongoConnect");
-const addEntry = require("./addEntry");
 
 
 app.use(express.static('public'));
@@ -13,7 +12,7 @@ app.get("/", (req, res) => {
 });
 
 
-app.get(/\/new\/[\S]+/, (req, res) => {
+app.get(/^\/new\/[\S]+$/, (req, res) => {
       const query = req.url.slice(5);
       let obj = {};
   
@@ -24,9 +23,12 @@ app.get(/\/new\/[\S]+/, (req, res) => {
           if (err) console.error("Can't access to database");
           const collection = db.db("short_urls").collection("short_urls");
           // Check if this url already exist
-          collection.find({original_url: url}).toArray((err, result) => {
+          collection.find().toArray((err, result) => {
+            const original_urls = result.map(val => val.original_url);
+            const matched = original_urls.filt
+            
             if (!result[0]) {
-              addEntry(collection, url, obj => res.json(obj));
+              
             }
             else {
               
