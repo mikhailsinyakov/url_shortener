@@ -23,15 +23,15 @@ app.get(/^\/new\/[\S]+$/, (req, res) => {
           const collection = db.db("short_urls").collection("short_urls");
           // Check if this url already exist
           collection.find().toArray((err, result) => {
-            const original_urls = result.map(val => val.original_url);
-            const matched = original_urls.filter(val => val == url).length;
+            const original_urls = result.map((val, index) => [val.original_url, index]);
+            console.log(original_urls)
+            const matchedDoc = original_urls.filter(val => val[0] == url);
+            const index = matchedDoc[1] || -1;
+            const matched = matchedDoc.length;
             
             if (matched) {
               // Show data of existing document in a page
-              const obj = {
-                original_url: url,
-                short_url: newShortUrl
-              };
+              const obj = result[index];
               res.json(obj);
             }
             else {
