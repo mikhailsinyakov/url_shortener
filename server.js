@@ -11,7 +11,7 @@ app.get("/", (req, res) => {
 
 mongoConnect((err, db) => {
   if (err) console.error("Can't access to database");
-  const collection = db.db("short_urls").collection("short_urls");
+  const collection = db.db("freecodecamp_projects").collection("short_urls");
   app.get(/^\/\S+$/, (req, res) => {
     const path = req.url;
     let obj;
