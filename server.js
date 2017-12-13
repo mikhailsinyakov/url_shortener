@@ -3,7 +3,6 @@ const app = express();
 const port = process.env.PORT;
 const mongoConnect = require("./mongoConnect");
 
-console.log(process.env)
 app.use(express.static('public'));
 
 app.get("/", (req, res) => {
@@ -15,9 +14,19 @@ mongoConnect((err, db) => {
   const collection = db.db("short_urls").collection("short_urls");
   app.get(/^\/\S+$/, (req, res) => {
     const path = req.url;
+    
     if (path.match(/^\/new\/\S+$/)) {
       const query = req.url.slice(5);
       const validUrl = /^https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*$/;
+      
+      if (!query.match(validUrl)) {
+        const obj = {
+          error: "Wrong url format, make sure you have a valid protocol and real site."
+        };
+        res.json(obj);
+        return;
+      }
+      
       if (query.match(validUrl)) {
         const url = query;
         collection.find().toArray((err, result) => {
@@ -71,12 +80,6 @@ mongoConnect((err, db) => {
             
         });
       }
-      else {
-        const obj = {
-          error: "Wrong url format, make sure you have a valid protocol and real site."
-        };
-        res.json(obj);
-      }
     }
     else if (path.match(/^\/\d+$/)) {
       const query = req.url.slice(1);
@@ -108,6 +111,4 @@ mongoConnect((err, db) => {
   });
 });
 
-app.listen(port, () => {
-  console.log('Your app is listening on port ' + port);
-});
+app.listen(port);
