@@ -1,10 +1,9 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT;
-//const mongo = require("mongodb").MongoClient;
 const mongoConnect = require("./mongoConnect");
 
-
+console.log(process.env)
 app.use(express.static('public'));
 
 app.get("/", (req, res) => {
