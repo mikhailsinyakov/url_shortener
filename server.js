@@ -14,13 +14,14 @@ mongoConnect((err, db) => {
   const collection = db.db("short_urls").collection("short_urls");
   app.get(/^\/\S+$/, (req, res) => {
     const path = req.url;
+    let obj;
     
     if (path.match(/^\/new\/\S+$/)) {
       const query = req.url.slice(5);
       const validUrl = /^https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*$/;
       
       if (!query.match(validUrl)) {
-        const obj = {
+        obj = {
           error: "Wrong url format, make sure you have a valid protocol and real site."
         };
         res.json(obj);
@@ -37,7 +38,7 @@ mongoConnect((err, db) => {
 
         if (matched) {
           // Show data of existing document in a page
-          const obj = {
+          obj = {
             original_url: result[index].original_url,
             short_url : result[index].short_url
           };
@@ -66,9 +67,9 @@ mongoConnect((err, db) => {
           else {
             newShortUrl = shortUrl;
           }
-        })(;
+        })();
           
-        const obj = {
+        obj = {
           original_url: url,
           short_url: newShortUrl
         };
@@ -87,7 +88,7 @@ mongoConnect((err, db) => {
         if (matchedDoc.length) index = matchedDoc[0][1];
         const matched = matchedDoc.length;
         if (!matched) {
-          const obj = {
+          obj = {
             error: "First use https://raspy-fright.glitch.me/new/yourwebsite"
           }
           res.json(obj);
@@ -98,7 +99,7 @@ mongoConnect((err, db) => {
       });
     }
     else {
-      const obj = {
+      obj = {
         error: "Invalid request, please get information on https://raspy-fright.glitch.me/"
       };
       res.json(obj);
