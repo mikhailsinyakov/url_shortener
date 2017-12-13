@@ -14,7 +14,9 @@ app.get("/", (req, res) => {
 mongoConnect((err, db) => {
   if (err) console.error("Can't access to database");
   const collection = db.db("short_urls").collection("short_urls");
-  app.get(/^\/new\/\S+$/, (req, res) => {
+  app.get(/^\/\S+$/, (req, res) => {
+    const path = req.url;
+    if (path.match(/^\/new\/\S+$/)) {
       const query = req.url.slice(5);
       const validUrl = /^https?:\/\/(www.)?[\w]+.[\w]{2,5}(\/[\w\?=&-]+)*$/;
       if (query.match(validUrl)) {
@@ -76,33 +78,33 @@ mongoConnect((err, db) => {
         };
         res.json(obj);
       }
-  });
-  
-  app.get(/^\/\d+$/, (req, res) => {
-    const query = req.url.slice(1);
-    const shortUrl = `https://raspy-fright.glitch.me/${query}`;
-    collection.find().toArray((err, result) => {
-      const short_urls = result.map((val, index) => [val.short_url, index]);
-      const matchedDoc = short_urls.filter(val => val[0] == shortUrl);
-      let index;
-      if (matchedDoc.length) index = matchedDoc[0][1];
-      const matched = matchedDoc.length;
-      if (matched) {
-        const originalUrl = result[index].original_url;
-        res.redirect(originalUrl);
-      }
-      else {
-        const obj = {
-          error: "First use https://raspy-fright.glitch.me/new/yourwebsite"
+    }
+    else if (path.match(/^\/\d+$/)) {
+      const query = req.url.slice(1);
+      const shortUrl = `https://raspy-fright.glitch.me/${query}`;
+      collection.find().toArray((err, result) => {
+        const short_urls = result.map((val, index) => [val.short_url, index]);
+        const matchedDoc = short_urls.filter(val => val[0] == shortUrl);
+        let index;
+        if (matchedDoc.length) index = matchedDoc[0][1];
+        const matched = matchedDoc.length;
+        if (matched) {
+          const originalUrl = result[index].original_url;
+          res.redirect(originalUrl);
         }
-        res.json(obj);
-      }
-    });
-  });
-  
-  app.get("/error", (req, res) => {
-    const obj = {
-      error: "Invalid request, please get information on https://raspy-fright.glitch.me/"
+        else {
+          const obj = {
+            error: "First use https://raspy-fright.glitch.me/new/yourwebsite"
+          }
+          res.json(obj);
+        }
+      });
+    }
+    else {
+      const obj = {
+        error: "Invalid request, please get information on https://raspy-fright.glitch.me/"
+      };
+      res.json(obj);
     }
   });
 });
